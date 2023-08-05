@@ -11,105 +11,62 @@
 #define printarray(a,n)   f(i, 0, n) { cout << a[i] << " "; } cout<<endl;
 using namespace std;
 
-int power(int a, int b, int p){
-    if(a==0)
-        return 0;
-    int res=1;
-    a%=p;
-    while(b>0){
-        if(b&1)
-        res=(1ll*res*a)%p;
-        b>>=1;
-        a=(1ll*a*a)%p;
-    }
-    return res;
-}
-
-int lcm(int a, int b){
-    if(a==0 || b==0)
-        return 0;
-    return (a*b)/__gcd(a,b);
-}
-
-int solve1(int l, int r, vector<int>&left, vector<int>&right, int n){
-    int p=0;
-    map<int,int>mp;
-    f(i,0,r){
-        mp[right[i]]++;
-    }
-    vector<int>rem;
-    f(i,0,l){
-        if(mp[left[i]]==0){
-            rem.pb(left[i]);
-        }
-        else{
-            mp[left[i]]--;
-        }
-    }
-    int ans=0;
-    ans+=rem.size();
-    p=rem.size();
-    for(auto i: mp){
-        if(p==0){
-            break;
-        }
-        if((i.second)%2==0){
-            if(p%2==0){
-                mp[i.first]-=min(i.second,p);
-                p-=min(i.second,p);
-            }
-            else{
-                p--;
-                mp[i.first]-=min(i.second,p);
-                p-=min(i.second,p);
-                p++;
-            }
-        }
-        else{
-            if(p%2==1){
-                mp[i.first]-=min(i.second,p);
-                p-=min(i.second,p);
-            }
-            else{
-                p--;
-                mp[i.first]-=min(i.second,p);
-                p-=min(i.second,p);
-                p++;
-            }
-        }
-    }
-    // cout << ans << endl;
-    p=0;
-    for(auto i: mp){
-        ans+=(i.second/2);
-        mp[i.first]%=2;
-        if(mp[i.first]==1){
-            p++;
-        }
-    }
-    return (ans+p);
-}
-
-
 void solve(){
-    int n, m, p=0,l,r, q;
+    int n, m, p=0,l, r, q, ans=0;
     cin >> n >> l >> r;
-    vector<int>left(l);
-    vector<int>right(r);
+    vector<int>left;
+    vector<int>right;
+    map<int,int>mp;
     f(i,0,l){
-        cin >> left[i];
-    }    
+        int x;
+        cin >> x;
+        mp[x]++;
+    }
     f(i,0,r){
-        cin >> right[i];
+        int x;
+        cin >> x;
+        if(mp[x]==0){
+            right.pb(x);
+        }
+        else{
+            mp[x]--;
+        }
     }
-    int ans=solve1(l,r,left,right,n);
-    if(l>r){
-        swap(l,r);
-        swap(left,right);
+    for(auto i: mp){
+        if(i.second>1){
+            ans+=i.second/2;
+            mp[i.first]=i.second%2;
+        }
     }
-    ans=min(ans,solve1(l,r,left,right,n));
-    cout << ans << endl;
+    for(auto i: mp){
+        int p=i.second;
+        while(p--){
+            left.pb(i.first);
+        }
+    }
+    mp.clear();
+    for(auto i: right){
+        mp[i]++;
+        if(mp[i]==2){
+            mp.erase(i);
+            ans++;
+        }
+    }
+    right.clear();
+    for(auto i: mp){
+        int p=i.second;
+        while(p--){
+            right.pb(i.first);
+        }
+    }
+    sort(all(left));
+    sort(all(right));
 
+    printarray(left,left.size());
+    printarray(right,right.size());
+    
+    cout << ans+max(left.size(),right.size()) << endl;
+    cout << endl;
 }
 
 signed main (){
