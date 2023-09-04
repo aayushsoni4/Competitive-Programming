@@ -49,13 +49,6 @@ signed main (){
                 adj[a[i]].pb(i);
         }
 
-        // f(i,0,n){
-        //     cout << i << " -> ";
-        //     for(auto j: adj[i]){
-        //         cout << j << " ";
-        //     }
-        //     cout << endl;
-        // }
         vector<vector<int>>ans;
         vector<int>v;
 
