@@ -38,63 +38,37 @@ void solve(){
     inputarray(a,n);
     string s;
     cin >> s;
-    vector<int>v(n,0);   
     cin >> q;
-    int ans1 = 0;
-    int ans0 = 0;
-    f(i,0,n){
-        if(s[i]=='0'){
-            ans0^=a[i];
+    int ans1[n+1] = {0};
+    int ans0[n+1] = {0};
+    int ans = 0;
+    f(i,1,n+1){
+        ans0[i]^=ans0[i-1];
+        ans1[i]^=ans1[i-1];
+        ans^=a[i-1];
+        if(s[i-1]=='0'){
+            ans0[i]^=a[i-1];
         }else{
-            ans1^=a[i];
+            ans1[i]^=a[i-1];
         }
     }
-    bool flag = false;
+    int res0 = ans0[n];
     while(q--){
         cin >> m;
         if(m==1){
             int l,r;
             cin >> l >> r;
-            v[l-1]++;
-            if(r<n)
-                v[r]--;
-            flag = true;
+            res0=res0^(ans0[r]^ans0[l-1]);
+            res0=res0^(ans1[r]^ans1[l-1]);
         }
         else{
             int p;
             cin >> p;
-            if(flag == true){
-                ans1=0;
-                ans0=0;
-                v[0]%=2;
-                if(v[0]==1)
-                    s[0] = '0'+1-(s[0]-'0');
-                f(i,1,n){
-                    v[i]+=v[i-1];
-                    v[i]%=2;
-                    v[i]+=2;
-                    v[i]%=2;
-                    if(v[i]==1){
-                        s[i] = '0'+1-(s[i]-'0');
-                    }
-                }   
-                f(i,0,n){
-                    v[i]=0;
-                    if(s[i]=='1'){
-                        ans1^=a[i];
-                    }
-                    else{
-                        ans0^=a[i];
-                    }
-                }
-                flag = false;
-            }
-            // cout << s << endl;
-            if(p==0){
-                cout << ans0 << " ";
+            if(p==1){
+                cout << (ans^res0) << " ";
             }
             else{
-                cout << ans1 << " ";
+                cout << res0 << " ";
             }
         }
     }

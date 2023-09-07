@@ -11,19 +11,13 @@ def solve():
     for i in range(1, n):
         prefixSum[i] = prefixSum[i - 1] + a[i]
         prefixProd[i] = prefixProd[i - 1] * a[i]
-
-    suffixSum[-1] = a[n - 1]
-    suffixProd[-1] = a[n - 1]
-    for i in range(n - 2, -1, -1):
-        suffixSum[i] = suffixSum[i + 1] + a[i]
-        suffixProd[i] = suffixProd[i + 1] * a[i]
-
+        
     i = 0
     j = n - 1
     l = i
     r = j 
     maxSum = 0
-    while i < n and j >= 0:
+    while i <= j:
         _sum = prefixSum[n-1]
         _sum -= prefixSum[j]
         if i > 0:
