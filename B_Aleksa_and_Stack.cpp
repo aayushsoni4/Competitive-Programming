@@ -31,41 +31,28 @@ int lcm(int a, int b){
     return (a*b)/__gcd(a,b);
 }
 
+string check(int a[], int n){
+    f(i,2,n){
+        if((3*a[i])%(a[i-1]+a[i-2])==0){
+            return "YES";
+        }
+    }
+    return "NO";
+}
+
 void solve(){
     int n, m, p=0, q;
-    string s;
-    cin >> s;
-    n = s.length();
-    for(int i=n-2;i>=0;i--){
-        if(s[i]=='A' and s[i+1]=='B'){
-            s[i]='B';
-            s[i+1]='C';
-            p++;
+    cin >> n;
+    int a[n];
+    a[0]=2;    
+    a[1]=3;
+    f(i,2,n){
+        a[i]=a[i-1]+1;
+        while((3*a[i])%(a[i-2]+a[i-1])==0){
+            a[i]++;
         }
-        else if(s[i]=='B' and s[i+1]=='A'){
-            s[i]='C';
-            s[i+1]='B';
-            p++;
-            int j = i+1;
-            while(j<n-1){
-                if(s[j]=='B' and s[j+1]=='A'){
-                    s[j]='C';
-                    s[j+1]='B';
-                    p++;
-                }
-                else{
-                    break;
-                }
-                j++;
-            }
-        }
-        // cout << s << endl;
-    }   
-    cout << p << endl;
-
-// AB -> BC
-// BA -> CB
-
+    }    
+    printarray(a,n);
 
 }
 

@@ -33,38 +33,17 @@ int lcm(int a, int b){
 
 void solve(){
     int n, m, p=0, q;
-    string s;
-    cin >> s;
-    n = s.length();
-    for(int i=n-2;i>=0;i--){
-        if(s[i]=='A' and s[i+1]=='B'){
-            s[i]='B';
-            s[i+1]='C';
-            p++;
+    cin >> n >> m;
+    int a[n];
+    inputarray(a,n);
+    f(i,0,n){
+        if(a[i]==m){
+            cout << "YES" << endl;
+            return;
         }
-        else if(s[i]=='B' and s[i+1]=='A'){
-            s[i]='C';
-            s[i+1]='B';
-            p++;
-            int j = i+1;
-            while(j<n-1){
-                if(s[j]=='B' and s[j+1]=='A'){
-                    s[j]='C';
-                    s[j+1]='B';
-                    p++;
-                }
-                else{
-                    break;
-                }
-                j++;
-            }
-        }
-        // cout << s << endl;
-    }   
-    cout << p << endl;
+    }
+    cout << "NO" << endl;
 
-// AB -> BC
-// BA -> CB
 
 
 }

@@ -31,42 +31,57 @@ int lcm(int a, int b){
     return (a*b)/__gcd(a,b);
 }
 
+bool mycomp(pair<int,int>&a, pair<int,int>&b){
+    return a.second>b.second;
+}
+
 void solve(){
     int n, m, p=0, q;
-    string s;
-    cin >> s;
-    n = s.length();
-    for(int i=n-2;i>=0;i--){
-        if(s[i]=='A' and s[i+1]=='B'){
-            s[i]='B';
-            s[i+1]='C';
-            p++;
+    cin >> n;
+    vector<set<int>>v;
+    map<int,vector<int>>mp;
+    f(i,0,n){
+        int k;
+        cin >> k;
+        set<int>s;
+        f(i,0,k){
+            int x;
+            cin >> x;
+            s.insert(x);
         }
-        else if(s[i]=='B' and s[i+1]=='A'){
-            s[i]='C';
-            s[i+1]='B';
-            p++;
-            int j = i+1;
-            while(j<n-1){
-                if(s[j]=='B' and s[j+1]=='A'){
-                    s[j]='C';
-                    s[j+1]='B';
-                    p++;
-                }
-                else{
-                    break;
-                }
-                j++;
+        for(auto r: s){
+            mp[r].push_back(i);
+        }
+        v.pb(s);
+    }    
+    if(n==1){
+        cout << 0 << endl;
+        return;
+    }
+    vector<pair<int,int>>vp;
+    for(auto i: mp){
+        vp.push_back({i.first,i.second.size()});
+    }
+    sort(vp.begin(),vp.end(),mycomp);
+    int ans=0;
+    set<int>s;
+    // for(auto i: vp){
+    //     cout << i.first << " ";
+    // }
+    // cout << endl;
+    // cout << endl;
+    f(i,0,n){
+        for(auto j: mp[vp[i].first]){
+            for(auto ele: v[j]){
+                s.insert(ele);
             }
+            if(s.size()!=mp.size())
+                ans = max(ans,(int)s.size());
+            else
+                break;
         }
-        // cout << s << endl;
-    }   
-    cout << p << endl;
-
-// AB -> BC
-// BA -> CB
-
-
+    }
+    cout << ans << endl;
 }
 
 signed main (){
