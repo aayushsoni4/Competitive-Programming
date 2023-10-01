@@ -31,28 +31,24 @@ int lcm(int a, int b){
     return (a*b)/__gcd(a,b);
 }
 
-string check(int a[], int n){
-    f(i,2,n){
-        if((3*a[i])%(a[i-1]+a[i-2])==0){
-            return "YES";
-        }
-    }
-    return "NO";
-}
-
 void solve(){
-    int n, m, p=0, q;
-    cin >> n;
+    int n, m, p=0, q, a1, b;
+    cin >> a1 >> b >> n; 
     int a[n];
-    a[0]=2;    
-    a[1]=3;
-    f(i,2,n){
-        a[i]=a[i-1]+1;
-        if((3*a[i])%(a[i-2]+a[i-1])==0){
-            a[i]++;
-        }
-    }    
-    printarray(a,n);
+    inputarray(a,n);
+    int ans = 0;
+    sort(a,a+n);
+    ans+=(b-1);
+    b=1;
+    f(i,0,n){
+        b=min(1+a[i],a1);
+        ans+=(b-1);
+        b=1;
+    }
+    cout << ans+1 << endl;
+    
+
+
 
 }
 

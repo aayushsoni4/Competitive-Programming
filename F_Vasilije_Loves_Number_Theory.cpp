@@ -31,28 +31,67 @@ int lcm(int a, int b){
     return (a*b)/__gcd(a,b);
 }
 
-string check(int a[], int n){
-    f(i,2,n){
-        if((3*a[i])%(a[i-1]+a[i-2])==0){
-            return "YES";
-        }
-    }
-    return "NO";
+
+#define MAXN 100001
+int spf[MAXN];
+void sieve(){
+	spf[1] = 1;
+	for (int i = 2; i < MAXN; i++)
+		spf[i] = i;
+	for (int i = 4; i < MAXN; i += 2)
+		spf[i] = 2;
+
+	for (int i = 3; i * i < MAXN; i++) {
+		if (spf[i] == i) {
+			for (int j = i * i; j < MAXN; j += i)
+				if (spf[j] == j)
+					spf[j] = i;
+		}
+	}
 }
+
+vector<int> getFactorization(int x)
+{
+	vector<int> ret;
+	while (x != 1) {
+		ret.push_back(spf[x]);
+		x = x / spf[x];
+	}
+	return ret;
+}
+
+
 
 void solve(){
     int n, m, p=0, q;
-    cin >> n;
-    int a[n];
-    a[0]=2;    
-    a[1]=3;
-    f(i,2,n){
-        a[i]=a[i-1]+1;
-        if((3*a[i])%(a[i-2]+a[i-1])==0){
-            a[i]++;
+    cin >> n >> q;
+    int nn = n;
+    map<int,int>mp;
+    map<int,int>mpp;
+    vector<int>v = getFactorization(n);
+    mp[1]=1;
+    for(auto i:v){
+        mp[i]++;
+    }
+    mpp = mp;
+    while(q--){
+        int ty, x;
+        cin >> ty;
+        if(ty==2){
+            mp=mpp;
+            n=nn;
+            continue;
         }
-    }    
-    printarray(a,n);
+        else{
+            cin >> x;
+            vector<int>v = getFactorization(x);
+            for(auto i:v){
+                mp[i]++;
+            }
+            
+        }
+    }
+
 
 }
 
@@ -60,6 +99,7 @@ signed main (){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     cout.tie(NULL);
+	sieve();
     int testcases=1;
     cin >> testcases;
     while (testcases--){

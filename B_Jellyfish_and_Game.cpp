@@ -31,28 +31,49 @@ int lcm(int a, int b){
     return (a*b)/__gcd(a,b);
 }
 
-string check(int a[], int n){
-    f(i,2,n){
-        if((3*a[i])%(a[i-1]+a[i-2])==0){
-            return "YES";
-        }
-    }
-    return "NO";
-}
-
 void solve(){
-    int n, m, p=0, q;
-    cin >> n;
+    int n, m, p=0, q, k;
+    cin >> n >> m >> k;
     int a[n];
-    a[0]=2;    
-    a[1]=3;
-    f(i,2,n){
-        a[i]=a[i-1]+1;
-        if((3*a[i])%(a[i-2]+a[i-1])==0){
-            a[i]++;
-        }
-    }    
-    printarray(a,n);
+    int b[m];
+    inputarray(a,n);
+    inputarray(b,m);
+    sort(a,a+n);
+    sort(b,b+m);
+    if(k==1){
+        if(a[0]<b[m-1])
+            swap(a[0],b[m-1]);
+    }
+    else if(k%2==1){
+        if(a[0]<b[m-1])
+            swap(a[0],b[m-1]);
+        sort(a,a+n);
+        sort(b,b+m);        
+    
+        if(b[0]<a[n-1])
+            swap(b[0],a[n-1]);
+
+        sort(a,a+n);
+        sort(b,b+m);        
+    
+        if(a[0]<b[m-1])
+            swap(a[0],b[m-1]);
+    }
+    else{
+        if(a[0]<b[m-1])
+            swap(a[0],b[m-1]);
+        sort(a,a+n);
+        sort(b,b+m);        
+    
+        if(b[0]<a[n-1])
+            swap(b[0],a[n-1]);
+    }
+    int ans = 0;
+    f(i,0,n){
+        ans+=a[i];
+    }
+    cout << ans << endl;
+
 
 }
 

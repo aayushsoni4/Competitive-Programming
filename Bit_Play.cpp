@@ -31,29 +31,52 @@ int lcm(int a, int b){
     return (a*b)/__gcd(a,b);
 }
 
-string check(int a[], int n){
-    f(i,2,n){
-        if((3*a[i])%(a[i-1]+a[i-2])==0){
-            return "YES";
-        }
-    }
-    return "NO";
-}
-
 void solve(){
     int n, m, p=0, q;
+    int mod = 1e9+7;
     cin >> n;
-    int a[n];
-    a[0]=2;    
-    a[1]=3;
-    f(i,2,n){
-        a[i]=a[i-1]+1;
-        if((3*a[i])%(a[i-2]+a[i-1])==0){
-            a[i]++;
+    string a;
+    cin >> a;    
+    int ans = 1;
+    for(int i=2;i<n;i+=2){
+        int cnt = 0;
+        if(a[i-1]=='0' and a[i-2]=='0'){
+            if(a[i]=='0'){
+                cnt+=3;
+            }
+            else{
+                cout << 0 << endl;
+                return;
+            }
         }
-    }    
-    printarray(a,n);
-
+        else if(a[i-1]=='1' and a[i-2]=='0'){
+            if(a[i]=='1'){
+                cnt+=2;
+            }
+            else{
+                cnt++;
+            }
+        }
+        else if(a[i-1]=='0' and a[i-2]=='1'){
+            if(a[i]=='1'){
+                cnt+=2;
+            }
+            else{
+                cnt++;
+            }
+        }
+        else{
+            if(a[i]=='1'){
+                cnt+=2;
+            }
+            else{
+                cnt++;
+            }
+        }
+        ans*=cnt;
+        ans%=mod;
+    }
+    cout << ans << endl;
 }
 
 signed main (){
