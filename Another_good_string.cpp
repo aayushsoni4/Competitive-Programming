@@ -25,16 +25,6 @@ int power(int a, int b, int p){
     return res;
 }
 
-string bin(int a){
-    string s="";
-    while(a>0){
-        s+=to_string(a%2);
-        a/=2;
-    }
-    reverse(s.begin(),s.end());
-    return s;
-}
-
 int lcm(int a, int b){
     if(a==0 || b==0)
         return 0;
@@ -43,35 +33,30 @@ int lcm(int a, int b){
 
 void solve(){
     int n, m, p=0, q;
-    cin >> n >> m >> p;
-    if(n<m){
-        swap(n,m);
+    cin >> n >> m;
+    string s;
+    cin >> s;
+    p=n+m;
+    vector<int>sz(p,1);
+    int maxi = 1;
+    f(i,1,n){
+        if(s[i-1]==s[i]){
+            sz[i]=sz[i-1]+1;
+        }
+        maxi = max(maxi, sz[i]);
     }
-    int mini = abs(n-m);
-    bool f = false;
-    for(int i=62;i>=0;i--){
-        if(((1LL<<i)&n) == ((1ll<<i)&m)){
-            continue;
+    cout << maxi << " ";
+    f(i,n,p){
+        char c;
+        cin >> c;
+        if(c==s[i-1]){
+            sz[i]=sz[i-1]+1;
         }
-        if(((1ll<<i)&n)>0 and !f){
-            f = true;
-            continue;
-        }
-        if((1LL<<i)<=p){
-            int temp = n^(1ll<<i);
-            int temp2 = m^(1ll<<i);
-            if(abs(temp-temp2)<mini){
-                n=temp;
-                m=temp2;
-                mini = abs(temp-temp2);
-                p-=(1LL<<i);
-            }
-            if(n<m){
-                swap(n,m);
-            }
-        }
+        maxi = max(maxi, sz[i]);
+        cout << maxi << " ";
+        s+=c;
     }
-    cout << mini << endl;
+    cout << endl;
 }
 
 signed main (){
