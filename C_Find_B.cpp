@@ -1,102 +1,77 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
+#define int               long long
+#define f(i,a,b)          for(int i=a;i<b;i++)
+#define mp                make_pair
+#define pb                push_back
+#define rall(a)           a.rbegin(),a.rend()
+#define all(a)            a.begin(),a.end()
+#define arraysort(a,n)      sort(a,a+n)
+#define endl              "\n"    
+#define inputarray(a, n)  f(i, 0, n) { cin >> a[i]; }
+#define printarray(a,n)   f(i, 0, n) { cout << a[i] << " "; } cout << endl;
 using namespace std;
- 
-const int MAX = 10001;
- 
-// Comparator to sort queries based on the end position
-bool cmp(vector<int> x, vector<int> y){
-    return x[1] < y[1];
-}
- 
-// Update function of BIT
-void update(int i, int val, int bit[], int n){
-    for (; i <= n; i += i&-i){
-        bit[i] += val;
+
+int power(int a, int b, int p){
+    if(a==0)
+        return 0;
+    int res=1;
+    a%=p;
+    while(b>0){
+        if(b&1)
+        res=(1ll*res*a)%p;
+        b>>=1;
+        a=(1ll*a*a)%p;
     }
+    return res;
 }
- 
-// Query function of BIT
-int query(int i, int bit[], int n){
-    int sum = 0;
-    for (; i>0; i-=i&-i)
-        sum += bit[i];
-    return sum;
+
+int lcm(int a, int b){
+    if(a==0 || b==0)
+        return 0;
+    return (a*b)/__gcd(a,b);
 }
- 
-// Function to solve the problem
-vector<string> solve(int arr[], int n, vector<vector<int>> queries, int q)
-{
-    // Sort queries based on the end position
-    sort(queries.begin(), queries.end(), cmp);
 
-    // Initialize BIT
-    int bit[n+1];
-    memset(bit, 0, sizeof(bit));
- 
-    // Initialize prev array
-    int prev[MAX];
-    memset(prev, -1, sizeof(prev));
- 
-    // Array to store answer for all queries
-    vector<string> ans(q, "NO"); // Initialize all answers to "NO"
-    int qind = 0;
-
-    // Iterate over input array
-    for (int i = 0; i < n; i++){
-
-        // If prev is not -1, update BIT
-        if (prev[arr[i]] != -1){
-            update(prev[arr[i]] + 1, -1, bit, n);
+void solve(){
+    int n, m, p=0, q;
+    cin >> n >> m;
+    int a[n];
+    inputarray(a,n);
+    int pre[n],cnt[n];
+    pre[0] = a[0];
+    cnt[0] = (a[0]==1);
+    f(i,1,n){
+        pre[i]=pre[i-1]+a[i];
+        cnt[i]=cnt[i-1]+(a[i]==1);
+    }
+    f(i,0,m){
+        int x,y;
+        cin >> x >> y;
+        x--;
+        y--;
+        if(x==y){
+            cout << "NO" << endl;
+            continue;
         }
-
-        // Set prev[arr[i]] as i and update BIT
-        prev[arr[i]] = i;
-        update(i + 1, 1, bit, n);
- 
-        // Check if the end position of any query is equal to i
-        while (qind < q && queries[qind][1] == i + 1){
-            int l = queries[qind][0], r = queries[qind][1];
-            int idx = queries[qind][2];
-
-            // Calculate the number of distinct elements in the subarray
-            int distinct_count = query(r, bit, n) - query(l - 1, bit, n);
-            
-            // Check if the subarray is "good"
-            if (distinct_count > 1){
-                ans[idx] = "YES"; // Update answer to "YES" if the subarray is "good"
-            }
-            qind++;
+        int ones = cnt[y]-(x>0?cnt[x-1]:0);
+        int sum = pre[y]-(x>0?pre[x-1]:0) - 2*ones;
+        if(sum>=y-x+1-ones){
+            cout << "YES" << endl;
+        }
+        else{
+            cout << "NO" << endl;
         }
     }
-    
-    return ans;
+
+
 }
- 
-// Driver code
-int main()
-{
-    int t;
-    cin >> t;
-    while(t--){
-        int n, q;
-        cin >> n >> q;
-        int a[n];
-        for(int i = 0; i < n; i++){
-            cin >> a[i];
-        }
-        vector<vector<int>> queries(q, vector<int>(3));
-        // Queries of the form - {l, r, idx}
-        for(int i = 0; i < q; i++){
-            int x, y;
-            cin >> x >> y;
-            queries[i][0] = x;
-            queries[i][1] = y;
-            queries[i][2] = i;
-        }
-        vector<string> ans = solve(a, n, queries, q);
-        for(int i = 0; i < q; i++){
-            cout << ans[i] << endl;
-        }
+
+signed main (){
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    int testcases=1;
+    cin >> testcases;
+    while (testcases--){
+        solve();
     }
-    return 0;
 }
