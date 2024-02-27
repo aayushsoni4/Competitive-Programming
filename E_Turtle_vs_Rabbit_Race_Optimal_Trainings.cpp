@@ -69,6 +69,9 @@ void solve(){
                 }
             }
             else{
+                if(newperformance==performance){
+                    ans=min(ans,mid);
+                }
                 if(sections-1>=u){
                     r=mid-1;
                 }
