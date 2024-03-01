@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#define int               long long
+// #define int               long long
 #define f(i,a,b)          for(int i=a;i<b;i++)
 #define mp                make_pair
 #define pb                push_back
@@ -34,56 +34,46 @@ int lcm(int a, int b){
 void solve(){
     int n, m, p=0, q;
     cin >> n;
-    string s,t;
-    cin >> s >> t;
-    string ans = "";
-    ans+=s[0];
-    int i=1,j=0;
-    while(i<n){
-        if(s[i]=='0' || (s[i]=='1' && t[j]=='1')){
-            ans+=s[i];
-            i++;
-            j++;
-        }
-        else{
-            while(j<n and i<n){
-                if(s[i]=='1' && t[j]=='0'){
-                    ans+=t[j];
-                    j++;
-                    break;
-                }
-                else{
-                    ans+=s[i];
-                    i++;
-                }
-            }
-            break;
+    p=0;
+    f(i,0,n){
+        cout << "? " << p << " " << p << " " << i << " " << i << endl;
+        char ch ;
+        cin >> ch;
+        if(ch=='<'){
+            p=i;
         }
     }
-    while(j<n){
-        ans+=t[j];
-        j++;
-    }
-    cout << ans << endl;
-    int res = 1;
-    f(i,0,n-1){
-        if(s[i+1]==t[i]){
-            res++;
+    q=0;
+    vector<int>mini;
+    f(i,0,n){
+        cout << "? " << q << " " << p << " " << i << " " << p << endl;
+        char ch;
+        cin >> ch;
+        if(ch=='<'){
+            q=i;
+            mini.clear();
+            mini.pb(i);
         }
-        else if(s[i+1]=='0' and t[i]=='1'){
-            res=1;
-        }
-        else{
-            break;
+        if(ch=='='){
+            mini.pb(i);
         }
     }
-    cout << res << endl;
+    int r = mini[0];
+    for(auto i: mini){
+        cout << "? " << r << " " << r << " " << i << " " << i << endl;
+        char ch;
+        cin >> ch;
+        if(ch=='>'){
+            r=i;
+        }
+    }
+    cout << "! " << p << " " << r << endl; 
 }
 
 signed main (){
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
+    // ios_base::sync_with_stdio(false);
+    // cin.tie(NULL);
+    // cout.tie(NULL);
     int testcases=1;
     cin >> testcases;
     while (testcases--){
