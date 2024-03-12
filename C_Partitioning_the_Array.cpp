@@ -40,29 +40,16 @@ void solve(){
         cout << 1 << endl;
         return;
     }
-    vector<int>div;
-    f(i,1,sqrt(n+2)){
-        if(n%i==0){
-            if(i*i==n)
-                div.pb(i);
-            else{
-                div.pb(i);
-                div.pb(n/i);
-            }
-        }
-    }
-    sort(all(div));
     int ans = 0;
-    for(auto d: div){
-        vector<vector<int>>vp(n/d,vector<int>(d));
-        int g = 0;
-        f(i,0,d){
-            f(j,i+d,n){
-                g = __gcd(abs(a[j]-a[j-d]),g);
+    f(i,1,n+1){
+        if(n%i==0){
+            int g = 0;
+            for(int j=0; j+i<n; j++){
+                g = __gcd(abs(a[j+i]-a[j]),g);
             }
-        }
-        if(g!=1){
-            ans++;
+            if(g!=1){
+                ans++;
+            }
         }
     }
     cout << ans << endl;

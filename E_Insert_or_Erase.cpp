@@ -11,62 +11,119 @@
 #define printarray(a,n)   f(i, 0, n) { cout << a[i] << " "; } cout << endl;
 using namespace std;
 
-int power(int a, int b, int p){
-    if(a==0)
-        return 0;
-    int res=1;
-    a%=p;
-    while(b>0){
-        if(b&1)
-        res=(1ll*res*a)%p;
-        b>>=1;
-        a=(1ll*a*a)%p;
-    }
-    return res;
-}
+class Node {
+public:
+    int data;
+    Node* prev;
+    Node* next;
+    
+    Node(int val) : data(val), prev(nullptr), next(nullptr) {}
+};
 
-int lcm(int a, int b){
-    if(a==0 || b==0)
-        return 0;
-    return (a*b)/__gcd(a,b);
-}
+class DoublyLinkedList {
+public:
+    Node* head;
+    Node* tail;
+    DoublyLinkedList() : head(nullptr), tail(nullptr) {}
+
+    void insertAfter(Node* prevNode, int data, map<int, Node*>&mp) {
+        if (prevNode == nullptr) {
+            return;
+        }
+        
+        Node* newNode = new Node(data);
+        mp[data]=newNode;
+        newNode->next = prevNode->next;
+        if (prevNode->next != nullptr) {
+            prevNode->next->prev = newNode;
+        }
+        prevNode->next = newNode;
+        newNode->prev = prevNode;
+        if (newNode->next == nullptr) {
+            tail = newNode;
+        }
+    }
+
+    void deleteNode(Node* nodeToDelete) {
+        if (nodeToDelete == nullptr || head == nullptr) {
+            return;
+        }
+        
+        if (nodeToDelete == head) {
+            head = head->next;
+        }
+        if (nodeToDelete == tail) {
+            tail = tail->prev;
+        }
+
+        if (nodeToDelete->prev != nullptr) {
+            nodeToDelete->prev->next = nodeToDelete->next;
+        }
+        
+        if (nodeToDelete->next != nullptr) {
+            nodeToDelete->next->prev = nodeToDelete->prev;
+        }
+
+        delete nodeToDelete;
+    }
+
+    void insertAtEnd(int data) {
+        Node* newNode = new Node(data);
+        if (tail == nullptr) {
+            head = tail = newNode;
+        } else {
+            tail->next = newNode;
+            newNode->prev = tail;
+            tail = newNode;
+        }
+    }
+
+    void display() {
+        Node* current = head;
+        while (current != nullptr) {
+            cout << current->data << " ";
+            current = current->next;
+        }
+        cout << endl;
+    }
+};
 
 void solve(){
-    int n, m, p=0, q;
+    int n, m;
     cin >> n;
     int a[n];
     inputarray(a,n);
-    cin >> q;
-    map<int,int>mp;
-    vector<vector<int>>vp(n);
+    DoublyLinkedList dll;
+    map<int,Node*>mp;
     f(i,0,n){
-        vector<int>v;
-        v.push_back(a[i]);
-        vp[i]=v;
-        mp[a[i]]=i;
+        dll.insertAtEnd(a[i]);
+        mp[a[i]] = dll.tail;
     }
-    while(q--){
-        cin >> m;
-        if(m==2){
-            cin >> p;
-            mp.erase(p);
+    cin >> m;
+    vector<vector<int>>vp;
+    f(i,0,m){
+        int x,y,z;
+        cin >> x;
+        if(x==2){
+            cin >> y;
+            vp.pb({x,y});
         }
         else{
-            int p,r;
-            cin >> p >> r;
-            vp[mp[p]].push_back(r);
-            mp[r]=mp[p];
+            cin >> y >> z;
+            vp.pb({x,y,z});
         }
     }
-    f(i,0,n){
-        for(auto l: vp[i]){
-            if(mp.find(l)!=mp.end()){
-                if(mp[l]==i)
-                    cout << l << " ";
-            }
+    
+    for(auto query : vp) {
+        if(query[0] == 2) {
+            dll.deleteNode(mp[query[1]]);
+            mp.erase(query[1]);
+        } 
+        else{
+            dll.insertAfter(mp[query[1]], query[2], mp);
         }
     }
-    cout << endl;
+    dll.display();
 }
 
 signed main (){
