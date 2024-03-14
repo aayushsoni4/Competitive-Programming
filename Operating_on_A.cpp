@@ -38,18 +38,29 @@ void solve(){
     int brr[n];
     inputarray(arr,n);
     inputarray(brr,n);
-    int a,b,c,d;
-    a = arr[0];
-    b = arr[1];
-    c = arr[2];
-    d = arr[3];
-    f(i,0,n){
-        p+=arr[i];
-        p-=arr[i];
+    vector<int>pref1(n,arr[0]);
+    vector<int>pref2(n,brr[0]);
+    f(i,1,n){
+        pref1[i]=pref1[i-1]+arr[i];
+        pref2[i]=pref2[i-1]+brr[i];
     }
-    if(p==0 and (brr[0]==a+b+c || brr[0]==arr[0]) && brr[n-1]==arr[n-1]+arr[n-2]+arr[n-3] || brr[n-1]==arr[n-1]){
+    vector<int>odd1,odd2,even1,even2;
+    f(i,0,n){
+        if(i%2==0){
+            even1.pb(pref1[i]);
+            even2.pb(pref2[i]);
+        }
+        else{
+            odd1.pb(pref1[i]);
+            odd2.pb(pref2[i]);
+        }
+    }
+    sort(all(odd1));
+    sort(all(odd2));
+    sort(all(even1));
+    sort(all(even2));  
+    if(odd1==odd2 && even1==even2 && pref1[n-1]==pref2[n-1]){
         cout << "YES" << endl;
-        return;
     }
     else{
         cout << "NO" << endl;
